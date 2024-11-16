@@ -1,0 +1,5 @@
+:host{display:grid !important;place-items:stretch;overflow-x:hidden !important}
+.viewport{grid-area:1 / 1 / 2 / 2;grid-row:1;overflow-y:auto}
+.scaled>*{pointer-events:none}
+.virtual.viewport{margin-inline-end:-48px;padding-inline-end:48px;overflow-x:hidden}
+.scaled>*{background:radial-gradient(1px,rgba(127,127,127,0.5),transparent);background-size:12px 12px}

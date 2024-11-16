@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<style>
+:where(*){
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root{
+  color-scheme: dark light;
+  --foreground-color: #eee;
+  --background-color: #222;
+  --accent-color: #8c40de;
+  @media(prefers-color-scheme:light){
+    --foreground-color: #333;
+    --background-color: #f8f8f8;
+  }
+}
+html{
+  font: 400 clamp(10pt, 8pt + 1vw + 1vh,32pt)/1.75 sans-serif;
+  background: var(--background-color);
+  color: var(--foreground-color);
+  accent-color: var(--accent-color);
+  height: 100%;
+}
+body{
+  min-height: 100%;
+  display: grid;
+  place-items: stretch;
+}
+list-view{
+  display: block;
+}
+</style>
+</head>
+<body>
+<list-view>Test</list-view>
+<script type="module">
+import _ from './listview.mjs';
+/** @type {ListView} */
+const listView=document.querySelector('list-view');
+const data=new Uint8Array(await(await fetch('./barlow.ttx')).arrayBuffer());
+const template=document.createElement('template');
+template.innerHTML=`<div class="row">
+  <div>0</div>
+  <span>00</span><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span>
+  <span>08</span><span>09</span><span>0a</span><span>0b</span><span>0c</span><span>0d</span><span>0e</span><span>0f</span>
+  <pre>................</pre>
+</div>`;
+listView.model={
+  count: Math.ceil(data.length/16),
+  createPlaceholderRow(){
+    return template.importNode(template.content,true);
+  },
+  render(placeholderRow,index){
+    const slice=this.data.subarray(index*16,index*16+16);
+    placeholderRow.querySelector('div').textContent=(index*16).toString(16);
+    placeholderRow.querySelectorAll('span').forEach((el,i)=>el.textContent=slice[i]?.toString(16)?.padStart(2,'0')??'\u00a0\u00a0');
+    placeholderRow.querySelector('pre').textContent=[...slice].map(it=>{
+      if(it<0x20||it>0x7e) return '.';
+      return String.fromCharCode(it);
+    }).join('').padEnd(16,'\u00a0');
+  }
+};
+</script>
+</body>
+</html>
