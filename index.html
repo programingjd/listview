@@ -33,11 +33,15 @@ body{
 }
 list-view{
   display: block;
+  font-size:clamp(7.5pt, calc(100dvw / 48), 64pt);
 }
+.row{font:150 1em monospace;display:grid;grid-template-columns:auto repeat(16,auto) auto;grid-template-rows:auto;column-gap:.5em;align-items:center;padding-inline:.5em}
+.row>div{font-size:.75em;color:#caffbf;text-align:end;margin-right:1em;width:8ch}
+.row p{font-weight:250}
 </style>
 </head>
 <body>
-<list-view>Test</list-view>
+<list-view></list-view>
 <script type="module">
 import _ from './listview.mjs';
 /** @type {ListView} */
@@ -53,10 +57,11 @@ template.innerHTML=`<div class="row">
 listView.model={
   count: Math.ceil(data.length/16),
   createPlaceholderRow(){
-    return template.importNode(template.content,true);
+    return document.importNode(template.content,true);
   },
   render(placeholderRow,index){
-    const slice=this.data.subarray(index*16,index*16+16);
+    console.log(`render ${index}`);
+    const slice=data.subarray(index*16,index*16+16);
     placeholderRow.querySelector('div').textContent=(index*16).toString(16);
     placeholderRow.querySelectorAll('span').forEach((el,i)=>el.textContent=slice[i]?.toString(16)?.padStart(2,'0')??'\u00a0\u00a0');
     placeholderRow.querySelector('pre').textContent=[...slice].map(it=>{

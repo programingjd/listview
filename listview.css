@@ -1,5 +1,11 @@
-:host{display:grid !important;place-items:stretch;overflow-x:hidden !important}
-.viewport{grid-area:1 / 1 / 2 / 2;grid-row:1;overflow-y:auto}
-.scaled>*{pointer-events:none}
-.virtual.viewport{margin-inline-end:-48px;padding-inline-end:48px;overflow-x:hidden}
-.scaled>*{background:radial-gradient(1px,rgba(127,127,127,0.5),transparent);background-size:12px 12px}
+:host{
+  position:relative;
+  display:grid !important;
+  overflow-x:hidden !important;
+  padding:0 !important;
+  border:0 !important;
+}
+.viewport{position:absolute;overflow-y:auto}
+.virtual.viewport{inset:0 var(--scrollbar-width,32px) 0 0;display:grid;grid-template-columns:1fr calc(var(--scrollbar-width,32px) * 2);inset-inline-end:calc(var(--scrollbar-width,32px)*-2);overflow-y:scroll}
+.virtual.viewport>:first-child{background:rgba(100,100,100,.3)}
+.scaled.viewport{right:0;top:0;bottom:0;width:calc(var(--scrollbar-width,32px) + 1px)}
