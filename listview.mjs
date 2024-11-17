@@ -10,7 +10,7 @@
 };
 const heightOf=(el,includeMargins=true)=>{
   const style=getComputedStyle(el);
-  return parseFloat(style.height)+(includeMargins?parseFloat(style.marginTop)+parseFloat(style.height):0);
+  return parseFloat(style.height)+(includeMargins?parseFloat(style.marginTop)+parseFloat(style.marginBottom):0);
 };
 const styles=await(await fetch(new URL('./listview.css',import.meta.url))).text();
 export default class ListView extends HTMLElement{
@@ -20,14 +20,16 @@ export default class ListView extends HTMLElement{
   #virtualCount=0;
   #rowHeight=0;
   #viewportHeight=0;
-  #layoutRequestId=0;
   #placeholderRows=[];
   #resizeObserver=new ResizeObserver((function(_entries){
     this.#layout();
   }).bind(this));
-  #scrollRequestId=0;
-  #onscroll=(function(_e){
-    this.#scroll();
+  #simulatedScrollTop=0;
+  #layoutRequestId=0;
+  #renderRequestId=0;
+  #onscroll=(function(){
+    cancelAnimationFrame(this.#renderRequestId);
+    this.#renderRequestId=requestAnimationFrame(this.#render.bind(this));
   }).bind(this);
   constructor(){
     super();
@@ -56,15 +58,11 @@ export default class ListView extends HTMLElement{
   // noinspection JSUnusedGlobalSymbols
   connectedCallback(){
     this.#layout();
-    this.#resizeObserver.observe(this);
-    const scaledViewport=this.shadowRoot.querySelector('.scaled.viewport');
-    scaledViewport.addEventListener('scroll',this.#onscroll);
+    setTimeout((function(){if(this.isConnected) this.#resizeObserver.observe(this)}).bind(this),0);
   }
   // noinspection JSUnusedGlobalSymbols
   disconnectedCallback(){
     this.#resizeObserver.unobserve(this);
-    const scaledViewport=this.shadowRoot.querySelector('.scaled.viewport');
-    scaledViewport.removeEventListener('scroll',this.#onscroll);
   }
   set model(/** @type {ListModel} */ model){
     this.#model=model;
@@ -73,7 +71,17 @@ export default class ListView extends HTMLElement{
     for(const it of placeholderRows.splice(0,placeholderRows.length)){
       it.remove();
     }
-    if(this.isConnected) this.#layout();
+    if(this.isConnected){
+      const root=this.shadowRoot;
+      const scaledViewport=root.querySelector('.scaled.viewport');
+      const virtualViewport=root.querySelector('.virtual.viewport');
+      scaledViewport.removeEventListener('scroll',this.#onscroll);
+      virtualViewport.removeEventListener('scroll',this.#onscroll);
+      this.#simulatedScrollTop=0;
+      scaledViewport.scrollTop=0;
+      virtualViewport.scrollTop=0;
+      this.#layout();
+    }
   }
   #layout(){
     cancelAnimationFrame(this.#layoutRequestId);
@@ -81,12 +89,15 @@ export default class ListView extends HTMLElement{
       const count=this.#count;
       const root=this.shadowRoot;
       const scaledView=root.querySelector('.scaled.viewport>*');
+      const virtualView=root.querySelector('.virtual.viewport>*');
       if(count===0){
         this.#rowHeight=0;
         this.#viewportHeight=0;
         this.#virtualCount=0;
         this.#scale=1;
+        this.#simulatedScrollTop=0;
         scaledView.style.height='0px';
+        virtualView.style.marginTop='0px';
         return;
       }
       const rowHeight=this.#rowHeight=count===0?0:heightOf(this.#placeholderRows[0]??this.#addRow());
@@ -97,6 +108,7 @@ export default class ListView extends HTMLElement{
       // +2 because the rows before and after might be partially visible,
       // *3 because we want to preload enough for page up and down.
       const virtualCount=this.#virtualCount=Math.ceil(viewportHeight/rowHeight+2)*3;
+      console.log(`viewport height: ${viewportHeight}, row height: ${rowHeight}, virtual count: ${virtualCount}, scale: ${scale}`);
       const placeholderRows=this.#placeholderRows;
       while(placeholderRows.length<virtualCount) this.#addRow();
       while(placeholderRows.length>virtualCount) this.#removeRow();
@@ -107,34 +119,46 @@ export default class ListView extends HTMLElement{
       this.#render();
     }).bind(this));
   }
-  #scroll(){
-    cancelAnimationFrame(this.#scrollRequestId);
-    this.#scrollRequestId=requestAnimationFrame((function(){
-      this.#render();
-    }).bind(this));
-  }
   #render(){
     const root=this.shadowRoot;
     const scaledViewport=root.querySelector('.scaled.viewport');
-    const scaledScrollTop=scaledViewport.scrollTop;
+    const virtualViewport=root.querySelector('.virtual.viewport');
+    scaledViewport.removeEventListener('scroll',this.#onscroll);
+    virtualViewport.removeEventListener('scroll',this.#onscroll);
+    const virtualScrollTop=virtualViewport.scrollTop;
+    let scaledScrollTop=scaledViewport.scrollTop;
     const scale=this.#scale;
+    let simulatedScrollTop=this.#simulatedScrollTop;
+    if(Math.abs(scaledScrollTop-this.#simulatedScrollTop/scale)<1){
+      simulatedScrollTop+=virtualScrollTop;
+    }else{
+      simulatedScrollTop=scaledScrollTop*scale+virtualScrollTop;
+    }
     const count=this.#count;
     const rowHeight=this.#rowHeight;
     const viewportHeight=this.#viewportHeight;
-    const simulatedScrollTop=Math.min(count*rowHeight-viewportHeight,scaledScrollTop*scale);
+    this.#simulatedScrollTop=simulatedScrollTop=Math.min(count*rowHeight-viewportHeight,simulatedScrollTop);
+    virtualViewport.scrollTop=0;
+    scaledViewport.scrollTop=Math.trunc(simulatedScrollTop/scale);
+
     const n=this.#virtualCount/3;
     let index=Math.trunc(simulatedScrollTop/rowHeight)-n;
-    console.log(`scrollTop: ${simulatedScrollTop}, index: ${index+n}`);
     let offset=simulatedScrollTop%rowHeight-n*rowHeight;
+    console.log(`scrollTop: ${simulatedScrollTop}, index: ${simulatedScrollTop/rowHeight}, offset: ${offset}`);
     const virtualView=root.querySelector('.virtual>*');
     virtualView.style.marginTop=`${offset}px`;
     const placeholderRows=this.#placeholderRows;
-    index-=n;
     const model=this.#model;
     for(const it of placeholderRows){
       if(index++<0||index>count) continue;
       model.render(it,index-1);
     }
+    setTimeout((function(){
+      if(this.isConnected){
+        scaledViewport.addEventListener('scroll',this.#onscroll);
+        virtualViewport.addEventListener('scroll',this.#onscroll);
+      }
+    }).bind(this),0);
   }
   #addRow(){
     let placeholderRow=this.#model.createPlaceholderRow();

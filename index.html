@@ -60,7 +60,6 @@ listView.model={
     return document.importNode(template.content,true);
   },
   render(placeholderRow,index){
-    console.log(`render ${index}`);
     const slice=data.subarray(index*16,index*16+16);
     placeholderRow.querySelector('div').textContent=(index*16).toString(16);
     placeholderRow.querySelectorAll('span').forEach((el,i)=>el.textContent=slice[i]?.toString(16)?.padStart(2,'0')??'\u00a0\u00a0');
