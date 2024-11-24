@@ -15,11 +15,11 @@ const heightOf=(el,includeMargins=true)=>{
 const styles=await(await fetch(new URL('./listview.css',import.meta.url))).text();
 export default class ListView extends HTMLElement{
   #model=EMPTY_LIST_MODEL;
-  #count=0;
-  #scale=1;
-  #virtualCount=0;
+  #rowCount=0;
   #rowHeight=0;
   #viewportHeight=0;
+  #scale=1;
+  #virtualCount=0;
   #placeholderRows=[];
   #resizeObserver=new ResizeObserver((function(_entries){
     this.#layout();
@@ -66,7 +66,7 @@ export default class ListView extends HTMLElement{
   }
   set model(/** @type {ListModel} */ model){
     this.#model=model;
-    this.#count=model?.count??0;
+    this.#rowCount=model?.count??0;
     const placeholderRows=this.#placeholderRows;
     for(const it of placeholderRows.splice(0,placeholderRows.length)){
       it.remove();
@@ -86,7 +86,7 @@ export default class ListView extends HTMLElement{
   #layout(){
     cancelAnimationFrame(this.#layoutRequestId);
     this.#layoutRequestId=requestAnimationFrame((function(){
-      const count=this.#count;
+      const count=this.#rowCount;
       const root=this.shadowRoot;
       const scaledView=root.querySelector('.scaled.viewport>*');
       const virtualView=root.querySelector('.virtual.viewport>*');
@@ -134,7 +134,7 @@ export default class ListView extends HTMLElement{
     }else{
       simulatedScrollTop=scaledScrollTop*scale+virtualScrollTop;
     }
-    const count=this.#count;
+    const count=this.#rowCount;
     const rowHeight=this.#rowHeight;
     const viewportHeight=this.#viewportHeight;
     this.#simulatedScrollTop=simulatedScrollTop=Math.min(count*rowHeight-viewportHeight,simulatedScrollTop);

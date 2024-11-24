@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 900 1440">
+<style>
+  text{font-family:monospace}
+</style>
+<g>
+  <path d="M100,1267.35l0,-1120l310,-27.353l80,20l190,-23.75l0,1120l-190,23.75l-80,-20l-310,27.353Zm580,-21.103l0,93.75l-580,0l0,-62.647l310,-27.353l80,20l190,-23.75Zm-580,-1108.9l0,-97.353l580,-0l0,66.25l-190,23.75l-80,-20l-310,27.353Z" style="fill:#b6fded;stroke:#000;stroke-width:1px;"/>
+  <path d="M672,254.839l0,869.322c0,3.312 -2.689,6 -6,6c-3.311,0 -6,-2.688 -6,-6l0,-869.322c0,-3.312 2.689,-6 6,-6c3.311,-0 6,2.688 6,6Z" style="fill:#81c6b7;"/>
+  <path d="M600,1140l80,0" style="fill:none;stroke:#3e8376;stroke-width:1px;"/>
+  <path d="M600,240l80,0" style="fill:none;stroke:#3e8376;stroke-width:1px;"/>
+</g>
+<g>
+  <rect x="100" y="240" width="460" height="900" style="fill:#c6c6c6;fill-opacity:0.67;stroke:#000;stroke-width:1px;"/>
+  <rect x="560" y="240" width="40" height="900" style="fill:#c6c6c6;stroke:#000;stroke-width:1px;"/>
+  <path d="M590,265l-0,850c-0,2.76 -2.24,5 -5,5c-2.76,-0 -5,-2.24 -5,-5l-0,-850c-0,-2.76 2.24,-5 5,-5c2.76,-0 5,2.24 5,5Z" style="fill:#767676;"/>
+  <path d="M562,241l-0,60" style="fill:none;"/>
+  <path d="M560,241c-0,-1.104 1.792,-2 4,-2c2.208,-0 4,0.896 4,2l0,60c-0,1.104 -1.792,2 -4,2c-2.208,-0 -4,-0.896 -4,-2l0,-60Z" style="fill:#767676;"/>
+  <path d="M560,1251.34l0,-111.342l40,-0l0,106.299l-40,5.043Z" style="fill:#c6c6c6;fill-opacity:0.69;stroke:#5b5b5b;stroke-width:1px;"/>
+  <path d="M600,1256.15l0,114.894l-20,-2.986l-20,1.268l0,-108.196l40,-4.98Z" style="fill:#c6c6c6;fill-opacity:0.69;stroke:#5b5b5b;stroke-width:1px;"/>
+  <path d="M600,1379.04l0,40.96l-40,-0l0,-42.678l20,-1.268l20,2.986Z" style="fill:#c6c6c6;fill-opacity:0.69;stroke:#5b5b5b;stroke-width:1px;"/>
+</g>
+<g>
+  <path d="M590,250.316l108.641,-50.316" style="fill:none;stroke:#000;stroke-width:1px;"/>
+  <text x="716.781px" y="196.406px" style="font-size:16px;">scaled viewport</text>
+  <path d="M585,360l115,-0" style="fill:none;stroke:#000;stroke-width:1px;"/>
+  <text x="715px" y="364.781px" style="font-size:16px;">scrollbar</text>
+  <path d="M564,280l136,0" style="fill:none;stroke:#000;stroke-width:1px;"/>
+  <g transform="matrix(1,0,0,1,-41.9474,30.4603)">
+    <text x="756.947px" y="237.383px" style="font-size:16px;">position</text>
+    <text x="756.947px" y="253.383px" style="font-size:16px;">&amp; extent</text>
+    <text x="756.947px" y="269.383px" style="font-size:16px;">indicator</text>
+  </g>
+  <path d="M520,435.844l180,-0" style="fill:none;stroke:#000;stroke-width:1px;"/>
+  <text x="716.812px" y="440px" style="font-size:16px;">viewport</text>
+  <path d="M632.68,980l67.32,0" style="fill:none;stroke:#000;stroke-width:1px;"/>
+  <text x="717.692px" y="984.156px" style="font-size:16px;">virtual viewport</text>
+  <path d="M580,1195.67l120.07,0" style="fill:none;stroke:#010001;stroke-width:1px;"/>
+  <text x="717.099px" y="1200.55px" style="font-size:16px;">scaled view</text>
+  <path d="M640.035,1299.86l60.035,0.839" style="fill:none;stroke:#010001;stroke-width:1px;"/>
+  <text x="717.692px" y="1305.74px" style="font-size:16px;">virtual view</text>
+</g>
+</svg>
