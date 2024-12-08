@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 /// <reference lib="esnext" />
 export interface ListModel {
-  count: number;
+  count: number|(()=>number);
   createPlaceholderRow(): HTMLElement;
   render(placeholderRow: HTMLElement, index: number): void;
 }

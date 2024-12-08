@@ -5,7 +5,7 @@
   padding:0 !important;
   border:0 !important;
 }
-.viewport{position:absolute;overflow-y:auto;scroll-behavior:smooth !important}
+.viewport{position:absolute;overflow-y:auto;scrollbar-gutter:stable}
 .virtual.viewport{inset:0 var(--scrollbar-width,32px) 0 0;display:grid;grid-template-columns:1fr calc(var(--scrollbar-width,32px) * 2);inset-inline-end:calc(var(--scrollbar-width,32px)*-2);overflow-y:scroll}
 .virtual.viewport>:first-child{background:rgba(100,100,100,.3)}
 .scaled.viewport{right:0;top:0;bottom:0;width:calc(var(--scrollbar-width,32px) + 1px)}

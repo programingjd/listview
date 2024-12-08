@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed608063-b16d-4d46-953a-2b01f6074327" name="Changes" comment="-">
+      <change afterPath="$PROJECT_DIR$/bundle.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rolldown.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listview.css" beforeDir="false" afterPath="$PROJECT_DIR$/listview.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/listview.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/listview.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/public.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,11 +55,14 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="I:\jdavid\virtual-scroller\virtual-scroller" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="I:\jdavid\listview" />
+    </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.13" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.59" />
       </set>
     </attachedChunks>
   </component>
