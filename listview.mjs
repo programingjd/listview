@@ -241,6 +241,9 @@ export default class ListView extends HTMLElement{
     simulatedScrollTop=this.#simulatedScrollTop=Math.max(
       0,Math.min(count*rowHeight-viewportHeight,simulatedScrollTop+verticalScrollAmount)
     );
+
+    // TODO only update on idle or until bounds are reached
+
     // update scaled scroll top if necessary
     scaledScrollTop=Math.trunc(simulatedScrollTop/verticalScale);
     if(scaledScrollTop!==scaledViewport.scrollTop){
