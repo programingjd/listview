@@ -20,7 +20,8 @@
   }
 }
 html{
-  font: 400 clamp(10pt, 8pt + 1vw + 1vh,32pt)/1.75 sans-serif;
+  /*font:400 clamp(7.5pt, calc(100dvw / 48), 64pt)/1.5 sans-serif;*/
+  font: 400 16pt/1.5 sans-serif;
   background: var(--background-color);
   color: var(--foreground-color);
   accent-color: var(--accent-color);
@@ -33,7 +34,6 @@ body{
 }
 list-view{
   display: block;
-  font-size:clamp(7.5pt, calc(100dvw / 48), 64pt);
 }
 .row{font:150 1em monospace;display:grid;grid-template-columns:auto repeat(16,auto) auto;grid-template-rows:auto;column-gap:.5em;align-items:center;padding-inline:.5em}
 .row>div{font-size:.75em;color:#caffbf;text-align:end;margin-right:1em;width:8ch}
