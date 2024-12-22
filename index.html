@@ -38,6 +38,7 @@ list-view{
 .row{font:150 1em monospace;display:grid;grid-template-columns:auto repeat(16,auto) auto;grid-template-rows:auto;column-gap:.5em;align-items:center;padding-inline:.5em}
 .row>div{font-size:.75em;color:#caffbf;text-align:end;margin-right:1em;width:8ch}
 .row p{font-weight:250}
+body.dragover{opacity:.5}
 </style>
 </head>
 <body>
@@ -54,7 +55,7 @@ template.innerHTML=`<div class="row">
   <span>08</span><span>09</span><span>0a</span><span>0b</span><span>0c</span><span>0d</span><span>0e</span><span>0f</span>
   <pre>................</pre>
 </div>`;
-listView.model={
+const model=data=>({
   count: Math.ceil(data.length/16),
   createPlaceholderRow(){
     return document.importNode(template.content,true);
@@ -68,7 +69,39 @@ listView.model={
       return String.fromCharCode(it);
     }).join('').padEnd(16,'\u00a0');
   }
-};
+});
+listView.model=model(data);
+let controller=null;
+const open=async(data)=>{
+  controller?.abort();
+  controller=new AbortController();
+  const signal=controller.signal;
+  listView.model=model(await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    signal.onabort=e=>{
+      reader.abort();
+      reject(e);
+    };
+    reader.onload=e=>resolve(new Uint8Array(e.target.result));
+    reader.onerror=e=>reject(e?.target?.error||e);
+    reader.readAsArrayBuffer(data);
+  }));
+}
+['dragenter','dragstart','drop'].forEach(type=>document.body.addEventListener(type,e=>{
+  e.preventDefault();
+  e.stopPropagation();
+  document.body.classList.remove('dragover');
+}));
+['dragover'].forEach(type=>document.body.addEventListener(type,e=>{
+  e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect='copy';
+  document.body.classList.add('dragover');
+}));
+['drop','paste'].forEach(type=>document.body.addEventListener(type,e=>{
+  const file=[...(e.dataTransfer?.files??e.clipboardData.files)]?.[0];
+  if(file) open(file);
+}));
 </script>
 </body>
 </html>

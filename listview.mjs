@@ -26,18 +26,18 @@ export default class ListView extends HTMLElement{
   #verticalScale=1;
   #virtualRowCount=0;
   #placeholderRows=[];
-  #resizeObserver=new ResizeObserver((function(_entries){
+  #resizeObserver=new ResizeObserver(_entries=>{
     document.removeEventListener('keydown',this.#onKeyDown);
     this.#layout();
-  }).bind(this));
+  });
   #simulatedScrollTop=0;
   #layoutRequestId=0;
   #renderRequestId=0;
   #onKeyDown;
-  #onscroll=(function(){
+  #onscroll=()=>{
     cancelAnimationFrame(this.#renderRequestId);
-    this.#renderRequestId=requestAnimationFrame(this.#render.bind(this));
-  }).bind(this);
+    this.#renderRequestId=requestAnimationFrame(()=>this.#render(false));
+  };
   constructor(){
     super();
     const root=this.attachShadow({mode:'open'});
@@ -103,7 +103,7 @@ export default class ListView extends HTMLElement{
   // noinspection JSUnusedGlobalSymbols
   connectedCallback(){
     this.#layout();
-    setTimeout((function(){if(this.isConnected) this.#resizeObserver.observe(this)}).bind(this),0);
+    setTimeout(()=>{if(this.isConnected) this.#resizeObserver.observe(this)},0);
   }
   // noinspection JSUnusedGlobalSymbols
   disconnectedCallback(){
@@ -134,8 +134,8 @@ export default class ListView extends HTMLElement{
   }
   #layout(){
     // only layout once per animation frame
-    cancelAnimationFrame(this.#layoutRequestId);
-    this.#layoutRequestId=requestAnimationFrame((function(){
+    clearInterval(this.#layoutRequestId);
+    this.#layoutRequestId=setTimeout(()=>{
       const model=this.#model;
       const root=this.shadowRoot;
       const scaledViewport=root.querySelector('.scaled.viewport');
@@ -164,15 +164,14 @@ export default class ListView extends HTMLElement{
       // +2 because the rows before and after might be partially visible
       // *3 because we want to render enough for page up and down
       const virtualRowCount=this.#virtualRowCount=Math.ceil(viewportHeight/rowHeight+2)*3;
-      console.debug(
-        `viewport: ${viewportHeight}px, row: ${rowHeight}px, virtual count: ${virtualRowCount}, scale: ${verticalScale}`
-      );
+      console.debug(`count: ${count}, row: ${rowHeight}px, scale: ${verticalScale}`);
+      console.debug(`viewport: ${viewportHeight}px, virtual count: ${virtualRowCount}`);
       // add or remove virtual rows (in the light dom) to match the desired count
       const placeholderRows=this.#placeholderRows;
       while(placeholderRows.length<virtualRowCount) this.#addRow();
       while(placeholderRows.length>virtualRowCount) this.#removeRow();
       // update the scaled view height
-      scaledView.style.height=`${simulatedHeight*verticalScale}px`;
+      scaledView.style.height=`${simulatedHeight/verticalScale}px`;
       // index of the first visible row (not an integer if the first row is partially visible)
       let index=this.#simulatedScrollTop/rowHeight;
       // index of the first virtual row (we try to have 1/3 above and below)
@@ -191,8 +190,8 @@ export default class ListView extends HTMLElement{
       root.host.style.setProperty('--scrollbar-width',`${scrollbarWidth}px`);
       document.addEventListener('keydown',this.#onKeyDown);
       // layout is done, trigger a render
-      this.#render();
-    }).bind(this));
+      this.#render(true);
+    },0);
   }
   #render(){
     const root=this.shadowRoot;
@@ -210,6 +209,7 @@ export default class ListView extends HTMLElement{
     const count=typeof model.count==='number'?model.count:model.count();
     // simulated scroll top before adjustment due to scroll changes
     let simulatedScrollTop=this.#simulatedScrollTop;
+    console.log(`simulated scroll top: ${simulatedScrollTop}`);
     // index of the first visible row (not an integer if the first row is partially visible) before adjustment
     let index=simulatedScrollTop/rowHeight;
     // index of the first virtual row (we try to have 1/3 above and below) before adjustment
@@ -227,8 +227,9 @@ export default class ListView extends HTMLElement{
     // scroll adjustment
     let verticalScrollAmount=0;
     // the scaled scroll top only participates if it has moved more than 1px
+    console.log(`scaled scroll: ${scaledViewport.scrollTop}`);
     let scaledScrollTop=Math.trunc(scaledViewport.scrollTop);
-    if(Math.abs(scaledScrollTop-simulatedScrollTop/verticalScale)<1){
+    if(Math.abs(scaledScrollTop-simulatedScrollTop/verticalScale)>1){
       verticalScrollAmount=scaledScrollTop*verticalScale-simulatedScrollTop;
     }
     console.log(`${virtualScrollTop} -> ${virtualViewport.scrollTop}`);
@@ -241,18 +242,16 @@ export default class ListView extends HTMLElement{
     simulatedScrollTop=this.#simulatedScrollTop=Math.max(
       0,Math.min(count*rowHeight-viewportHeight,simulatedScrollTop+verticalScrollAmount)
     );
-
-    // TODO only update on idle or until bounds are reached
-
     // update scaled scroll top if necessary
     scaledScrollTop=Math.trunc(simulatedScrollTop/verticalScale);
     if(scaledScrollTop!==scaledViewport.scrollTop){
       scaledViewport.scrollTop=scaledScrollTop;
-      console.log(`scaled scrollTop: ${virtualScrollTop}`);
+      console.log(`scaled scrollTop: ${scaledScrollTop}`);
     }
+    // TODO we want to only update virtual scroll on idle or until bounds are reached, otherwise we cancel the native inertia
     index=simulatedScrollTop/rowHeight;
     k=index-virtualRowCount/3;
-    k=Math.min(k,count-viewportHeight/rowHeight);
+    k=Math.min(k,count-virtualRowCount);
     k=Math.max(0,k);
     // decimal part is set as margin
     partialRowOffset=(k-Math.trunc(k))*rowHeight;
