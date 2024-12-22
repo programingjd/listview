@@ -1,2 +1,2 @@
 @echo off
-deno run -A npm@rolldown -c
+deno run -A npm:rolldown -c
