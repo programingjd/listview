@@ -186,7 +186,7 @@ export default class ListView extends HTMLElement{
       virtualViewport.scrollTop=(index-k)*rowHeight;
       // set css variable for the scrollbar width
       const scrollbarWidth=virtualViewport.offsetWidth-virtualViewport.clientWidth;
-      root.host.style.setProperty('--scrollbar-width',`${scrollbarWidth}px`);
+      root.host.style.setProperty('--scrollbar-width',`${scrollbarWidth||17}px`);
       document.addEventListener('keydown',this.#onKeyDown,true);
       // layout is done, trigger a render
       this.#render(true);
