@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed608063-b16d-4d46-953a-2b01f6074327" name="Changes" comment="-">
-      <change afterPath="$PROJECT_DIR$/dist/listview-min.mjs.br" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/listview-min.mjs.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/listview-min.mjs.map.br" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/listview.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/listview-min.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/listview.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/listview.css" beforeDir="false" afterPath="$PROJECT_DIR$/listview.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/listview.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/listview.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rolldown.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/rolldown.config.js" afterDir="false" />
-    </list>
+    <list default="true" id="ed608063-b16d-4d46-953a-2b01f6074327" name="Changes" comment="-" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
