@@ -39,6 +39,12 @@ list-view{
 .row>div{font-size:.75em;color:#caffbf;text-align:end;margin-right:1em;width:8ch}
 .row p{font-weight:250}
 body.dragover{opacity:.5}
+list-view:empty:after{
+  content:'Paste or drag & drop';
+  font-style:italic;
+  display:grid;
+  place-items:center;
+}
 </style>
 </head>
 <body>
@@ -70,7 +76,7 @@ const model=data=>({
     }).join('').padEnd(16,'\u00a0');
   }
 });
-listView.model=model(data);
+// listView.model=model(data);
 let controller=null;
 const open=async(data)=>{
   controller?.abort();
