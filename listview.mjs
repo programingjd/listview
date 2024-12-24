@@ -1,4 +1,4 @@
-/// <reference path="./public.d.ts"/>
+/// <reference path="./listview.d.ts"/>
 const defaultCreatePlaceholderRow=()=>{
   const el=document.createElement("div");
   el.textContent='placeholder';
