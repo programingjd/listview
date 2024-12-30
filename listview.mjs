@@ -35,6 +35,7 @@ export default class ListView extends HTMLElement{
     this.#layout();
   });
   #simulatedScrollTop=0;
+  #position=null;
   #layoutRequestId=0;
   #renderRequestId=0;
   #onKeyDown;
@@ -134,6 +135,22 @@ export default class ListView extends HTMLElement{
       document.removeEventListener('keydown',this.#onKeyDown);
       this.#layout();
     }
+  }
+  get position(){
+    const model=this.#model;
+    const count=typeof model.count==='number'?model.count:model.count();
+    if(count === 0) return 0;
+    if(this.#position!==null) return this.#position;
+    const simulateScrollTop=this.#simulatedScrollTop;
+    if(simulateScrollTop===0) return 0;
+    const rowHeight=this.#rowHeight;
+    if(rowHeight===0) return 0;
+    return simulateScrollTop/rowHeight;
+  }
+  set position(index){
+    this.#position=index;
+    cancelAnimationFrame(this.#renderRequestId);
+    this.#renderRequestId=requestAnimationFrame(()=>this.#render(false));
   }
   #layout(){
     // only layout once per animation frame
@@ -237,9 +254,16 @@ export default class ListView extends HTMLElement{
     let partialRowOffset=parseFloat(virtualView.style.getPropertyValue('marginTop')||0);
     verticalScrollAmount+=partialRowOffset;
     // update simulated scroll top
-    simulatedScrollTop=this.#simulatedScrollTop=Math.max(
-      0,Math.min(count*rowHeight-viewportHeight,simulatedScrollTop+verticalScrollAmount)
-    );
+    if(this.#position!==null){
+      simulatedScrollTop=this.#simulatedScrollTop=Math.max(
+        0,Math.min(count*rowHeight-viewportHeight,this.#position*rowHeight)
+      );
+      this.#position=null;
+    }else{
+      simulatedScrollTop=this.#simulatedScrollTop=Math.max(
+        0,Math.min(count*rowHeight-viewportHeight,simulatedScrollTop+verticalScrollAmount)
+      );
+    }
     // update scaled scroll top if necessary
     scaledScrollTop=Math.trunc(simulatedScrollTop/verticalScale);
     if(scaledScrollTop!==scaledViewport.scrollTop){

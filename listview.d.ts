@@ -12,5 +12,7 @@ export class ListView extends HTMLElement {
   attributeChangedCallback(attributeName: string, oldValue: string): void;
   static get observedAttributes(): string[];
   set model(model: ListModel);
+  get position(): number;
+  set position(index: number);
 }
 export default ListView;
