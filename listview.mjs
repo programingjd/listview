@@ -22,7 +22,6 @@ const heightOf=(el,includeMargins=true)=>{
 const styles=`:host{position:relative;display:grid !important;overflow-x:hidden !important;padding:0 !important;border:0 !important;--scrollbar-width:17px}
 .viewport{position:absolute;overflow-y:auto;scrollbar-gutter:stable}
 .virtual.viewport{overflow-y:scroll;scrollbar-width:auto;inset:0 var(--scrollbar-width) 0 0;display:grid;grid-template-columns:1fr calc(var(--scrollbar-width) * 2);inset-inline-end:calc(var(--scrollbar-width) * -2)}
-.virtual.viewport>:first-child{background:rgba(100,100,100,.3)}
 .scaled.viewport{right:0;top:0;bottom:0;width:calc(var(--scrollbar-width) + 1px)}`;
 export default class ListView extends HTMLElement{
   #model=EMPTY_LIST_MODEL;

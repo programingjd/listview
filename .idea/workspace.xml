@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed608063-b16d-4d46-953a-2b01f6074327" name="Changes" comment="-" />
+    <list default="true" id="ed608063-b16d-4d46-953a-2b01f6074327" name="Changes" comment="-">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/listview-min.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/dist/listview-min.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/listview-min.mjs.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/listview-min.mjs.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listview.css" beforeDir="false" afterPath="$PROJECT_DIR$/listview.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listview.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/listview.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rolldown.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/rolldown.config.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,6 +70,42 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="fa414077-1dde-4770-89d4-ebd5d8fe677d" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="fa414077-1dde-4770-89d4-ebd5d8fe677d">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-" />
