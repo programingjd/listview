@@ -32,10 +32,12 @@ export default class ListView extends HTMLElement{
   #placeholderRows=[];
   #resizeObserver=new ResizeObserver(_entries=>{
     document.removeEventListener('keydown',this.#onKeyDown);
+    this.#laidOut=false;
     this.#layout();
   });
   #simulatedScrollTop=0;
   #position=null;
+  #laidOut=false;
   #layoutRequestId=0;
   #renderRequestId=0;
   #onKeyDown;
@@ -106,6 +108,7 @@ export default class ListView extends HTMLElement{
   }
   // noinspection JSUnusedGlobalSymbols
   connectedCallback(){
+    this.#laidOut=false;
     this.#layout();
     setTimeout(()=>{if(this.isConnected) this.#resizeObserver.observe(this)},0);
   }
@@ -116,6 +119,7 @@ export default class ListView extends HTMLElement{
   }
   set model(/** @type {ListModel} */ model){
     this.#model=model??EMPTY_LIST_MODEL;
+    this.#laidOut=false;
     // clear placeholder rows from the latest model
     const placeholderRows=this.#placeholderRows;
     for(const it of placeholderRows.splice(0,placeholderRows.length)){
@@ -149,8 +153,13 @@ export default class ListView extends HTMLElement{
   }
   set position(index){
     this.#position=index;
-    cancelAnimationFrame(this.#renderRequestId);
-    this.#renderRequestId=requestAnimationFrame(()=>this.#render(false));
+    this.invalidate();
+  }
+  invalidate(){
+    if(this.#laidOut){
+      cancelAnimationFrame(this.#renderRequestId);
+      this.#renderRequestId=requestAnimationFrame(()=>this.#render(false));
+    }
   }
   #layout(){
     // only layout once per animation frame
@@ -209,6 +218,7 @@ export default class ListView extends HTMLElement{
       const scrollbarWidth=virtualViewport.offsetWidth-virtualViewport.clientWidth;
       if(scrollbarWidth>0) root.host.style.setProperty('--scrollbar-width',`${scrollbarWidth}px`);
       document.addEventListener('keydown',this.#onKeyDown,true);
+      this.#laidOut=true;
       // layout is done, trigger a render
       this.#render(true);
     },0);

@@ -14,5 +14,6 @@ export class ListView extends HTMLElement {
   set model(model: ListModel);
   get position(): number;
   set position(index: number);
+  invalidate(): void
 }
 export default ListView;
