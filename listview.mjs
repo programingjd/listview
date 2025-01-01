@@ -228,7 +228,6 @@ export default class ListView extends HTMLElement{
     },0);
   }
   #render(_immediate){
-    console.log('render');
     const root=this.shadowRoot;
     const scaledViewport=root.querySelector('.scaled.viewport');
     const virtualViewport=root.querySelector('.virtual.viewport');
