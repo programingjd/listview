@@ -59,15 +59,17 @@ export default class ListView extends HTMLElement{
      </div>
      <div class="gutter"></div>
    </div>
-   <div class="scaled viewport"> (scroll)
-     <div style="height: ?px"></div>
+   <div class="scaled viewport" tabindex="-1"> (scroll)
+     <div tabindex="-1" style="height: ?px"></div>
    </div>
  */
     const scaledViewport=document.createElement('div');
     scaledViewport.classList.add('viewport');
     scaledViewport.classList.add('scaled');
+    scaledViewport.tabIndex=-1;
     const scaledView=document.createElement('div');
     scaledViewport.appendChild(scaledView);
+    scaledView.tabIndex=-1;
     const virtualViewport=document.createElement('div');
     virtualViewport.classList.add('viewport');
     virtualViewport.classList.add('virtual');
@@ -289,7 +291,7 @@ export default class ListView extends HTMLElement{
     }
     // update scaled scroll top if necessary
     scaledScrollTop=simulatedScrollTop/scaledScrollTopScale;
-    if(Math.round(scaledScrollTop)!==Math.round(scaledViewport.scrollTop)){
+    if(Math.abs(Math.round(scaledScrollTop)-Math.round(scaledViewport.scrollTop))>1){
       scaledViewport.scrollTop=scaledScrollTop;
     }
     // TODO we might want to only update virtual scroll on idle or until bounds are reached,
@@ -317,10 +319,10 @@ export default class ListView extends HTMLElement{
         model.render(it,k-1);
       }
     }
+    this.#scaledScroll=false;
     // restore the scroll listeners
     scaledViewport.addEventListener('scroll',this.#onscroll);
     virtualViewport.addEventListener('scroll',this.#onscroll);
-    this.#scaledScroll=false;
   }
   #addRow(){
     const createPlaceholderRow=this.#model.createPlaceholderRow;
