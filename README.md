@@ -25,7 +25,7 @@ The `ListModel` needs to have 3 members:
   - `createPlaceholderRow`<br>
   A function that returns the dom element to use for a row. It needs to have the correct size even before being bound to a specific row.
   - `render`<br>
-  A function that modified the placeholder element to diplay the row at the specified index.<br>
+  A function that modifies the placeholder element to diplay the row at the specified index.<br>
   It has 2 arguments:
     - `placeholderRow`<br>
     A dom element created from the previous function
