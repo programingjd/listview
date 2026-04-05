@@ -22,7 +22,9 @@ const heightOf=(el,includeMargins=true)=>{
 const styles=`:host{position:relative;display:grid !important;overflow-x:hidden !important;padding:0 !important;border:0 !important;--scrollbar-width:17px}
 .viewport{position:absolute;overflow-y:auto;scrollbar-gutter:stable}
 .virtual.viewport{overflow-y:scroll;scrollbar-width:auto;inset:0 var(--scrollbar-width) 0 0;display:grid;grid-template-columns:1fr calc(var(--scrollbar-width) * 2);inset-inline-end:calc(var(--scrollbar-width) * -2)}
-.scaled.viewport{right:0;top:0;bottom:0;width:calc(var(--scrollbar-width) + 1px)}`;
+.scaled.viewport{right:0;top:0;bottom:0;width:calc(var(--scrollbar-width) + 1px)}
+slot[name="placeholder"]{position:absolute;inset:0;display:grid;place-items:center}
+slot[name="placeholder"].hidden{display:none}`;
 export default class ListView extends HTMLElement{
   #model=EMPTY_LIST_MODEL;
   #rowHeight=0;
@@ -82,6 +84,9 @@ export default class ListView extends HTMLElement{
     virtualViewport.appendChild(gutter);
     root.appendChild(virtualViewport);
     root.appendChild(scaledViewport);
+    const placeholderSlot=document.createElement('slot');
+    placeholderSlot.setAttribute('name','placeholder');
+    root.appendChild(placeholderSlot);
     this.#onKeyDown=e=>{
       if(e.ctrlKey||e.metaKey){
         if(e.shiftKey) return;
@@ -120,6 +125,8 @@ export default class ListView extends HTMLElement{
   set model(/** @type {ListModel} */ model){
     this.#model=model??EMPTY_LIST_MODEL;
     this.#laidOut=false;
+    const root=this.shadowRoot;
+    root.querySelector('slot[name="placeholder"]').classList.add('hidden');
     // clear placeholder rows from the latest model
     const placeholderRows=this.#placeholderRows;
     for(const it of placeholderRows.splice(0,placeholderRows.length)){
@@ -127,7 +134,6 @@ export default class ListView extends HTMLElement{
     }
     if(this.isConnected){
       // reset scroll position to top and trigger layout
-      const root=this.shadowRoot;
       const scaledViewport=root.querySelector('.scaled.viewport');
       const virtualViewport=root.querySelector('.virtual.viewport');
       const virtualView=virtualViewport.firstElementChild;
